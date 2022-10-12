@@ -70,10 +70,10 @@ def index():
 
         # Update portfolio
         db.execute("UPDATE portfolio SET stock_price = ?, total_value = ? WHERE account_id = ? AND symbol = ?",
-            stock_price,
-            stock_price * entry["shares"],
-            session["user_id"],
-            entry["symbol"])
+                   stock_price,
+                   stock_price * entry["shares"],
+                   session["user_id"],
+                   entry["symbol"])
 
         user_value += entry["total_value"]
 
@@ -81,7 +81,7 @@ def index():
     user_portfolio = db.execute("SELECT * FROM portfolio WHERE account_id = ? ORDER BY symbol", session["user_id"])
 
     # Render homepage and pass variables to jinja
-    return render_template("index.html", user_portfolio = user_portfolio, user_cash = user_cash, user_value = user_value + user_cash)
+    return render_template("index.html", user_portfolio=user_portfolio, user_cash=user_cash, user_value=user_value + user_cash)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -140,25 +140,25 @@ def buy():
 
         # Update the user's transaction history
         db.execute("INSERT INTO transaction_history (account_id, company_name, ticker_symbol, amount, price, transaction_type, date_time) VALUES(?, ?, ?, ?, ?, ?, ?)",
-            session["user_id"],
-            symbol_data["name"],
-            symbol_data["symbol"],
-            shares,
-            symbol_price,
-            "Buy",
-            time.strftime("%m/%d/%y %I:%M %p GMT"))
+                   session["user_id"],
+                   symbol_data["name"],
+                   symbol_data["symbol"],
+                   shares,
+                   symbol_price,
+                   "Buy",
+                   time.strftime("%m/%d/%y %I:%M %p GMT"))
 
         # Check if the user already owns shares of the company if they don't insert into their portfolio how many shares they have after purchase and return bought page
 
         if len(db.execute("SELECT shares FROM portfolio WHERE symbol = ? AND account_id = ?", symbol_data["symbol"], session["user_id"])) == 0:
 
             db.execute("INSERT INTO portfolio (account_id, company_name, symbol, shares, stock_price, total_value) VALUES(?, ?, ?, ?, ?, ?)",
-            session["user_id"],
-            symbol_data["name"],
-            symbol_data["symbol"],
-            shares,
-            symbol_price,
-            shares * symbol_price)
+                       session["user_id"],
+                       symbol_data["name"],
+                       symbol_data["symbol"],
+                       shares,
+                       symbol_price,
+                       shares * symbol_price)
 
             # Update user balance after all is said and done
             db.execute("UPDATE users SET cash = ? FROM users AS u WHERE u.id = ?", user_balance - purchase_cost, session["user_id"])
@@ -168,12 +168,12 @@ def buy():
 
         # Otherwise, update their portfolio with increasing the shares they bought of company and return bought page
         db.execute("UPDATE portfolio SET shares = ? WHERE account_id = ? AND symbol = ?",
-            db.execute("SELECT shares FROM portfolio WHERE account_id = ? AND symbol = ?",
-                session["user_id"],
-                symbol_data["symbol"])[0]["shares"]
-            + shares,
-            session["user_id"],
-            symbol_data["symbol"])
+                   db.execute("SELECT shares FROM portfolio WHERE account_id = ? AND symbol = ?",
+                              session["user_id"],
+                              symbol_data["symbol"])[0]["shares"]
+                   + shares,
+                   session["user_id"],
+                   symbol_data["symbol"])
 
         # Update user balance after all is said and done
         db.execute("UPDATE users SET cash = ? FROM users AS u WHERE u.id = ?", user_balance - purchase_cost, session["user_id"])
@@ -190,10 +190,11 @@ def history():
     """Show history of transactions"""
 
     # Execute query on transaction table based on user order by date / time
-    transaction_history = db.execute("SELECT * FROM transaction_history WHERE account_id = ? ORDER BY transaction_id DESC", session["user_id"])
+    transaction_history = db.execute(
+        "SELECT * FROM transaction_history WHERE account_id = ? ORDER BY transaction_id DESC", session["user_id"])
 
     # Render history.html page and pass in the query table so jinja can access it
-    return render_template("history.html", transaction_history = transaction_history)
+    return render_template("history.html", transaction_history=transaction_history)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -321,14 +322,13 @@ def register():
         if len(db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))) != 0:
             return apology("Username already taken, please choose another one!")
 
-
         # Temp variables for username and password
         username = request.form.get("username")
 
         # Instead of storing the actual password we will store the hash of the password for security
         password = generate_password_hash(request.form.get("password"), method="sha256", salt_length=8)
 
-        #Insert into 'users' table new user, all new users get 10,000 cash as bonus for signing up
+        # Insert into 'users' table new user, all new users get 10,000 cash as bonus for signing up
         db.execute("INSERT INTO users (username, hash, cash) VALUES(?, ?, ?)", username, password, 10000.00)
 
         # Users will be redirected to homepage and prompted to log in
@@ -385,8 +385,8 @@ def sell():
 
         # Find total shares of company that the user owns from 'portfolio' table
         num_shares = db.execute("SELECT shares FROM portfolio WHERE account_id = ? AND symbol = ?",
-                        session["user_id"],
-                        symbol_data["symbol"])
+                                session["user_id"],
+                                symbol_data["symbol"])
 
         # Error if somehow they try to sell shares they don't own
         if len(num_shares) != 1:
@@ -401,19 +401,19 @@ def sell():
 
         # Insert the sell transaction into the 'transaction' table
         db.execute("INSERT INTO transaction_history (account_id, company_name, ticker_symbol, amount, price, transaction_type, date_time) VALUES(?, ?, ?, ?, ?, ?, ?)",
-            session["user_id"],
-            symbol_data["name"],
-            symbol_data["symbol"],
-            shares_sold,
-            symbol_price,
-            "Sell",
-            time.strftime("%m/%d/%y %I:%M %p GMT"))
+                   session["user_id"],
+                   symbol_data["name"],
+                   symbol_data["symbol"],
+                   shares_sold,
+                   symbol_price,
+                   "Sell",
+                   time.strftime("%m/%d/%y %I:%M %p GMT"))
 
         # If user sells all their shares of company, delete row from their 'portfolio' table containing their shares of said company
         if shares_sold == num_shares[0]["shares"]:
             db.execute("DELETE FROM portfolio WHERE account_id = ? AND symbol = ?",
-            session["user_id"],
-            symbol_data["symbol"])
+                       session["user_id"],
+                       symbol_data["symbol"])
 
             # Update user balance in table
             db.execute("UPDATE users SET cash = ? FROM users AS u WHERE u.id = ?", user_balance, session["user_id"])
@@ -423,12 +423,12 @@ def sell():
 
         # Otherwise update their portfolio with new amount of shares that they own
         db.execute("UPDATE portfolio SET shares = ? WHERE account_id = ? AND symbol = ?",
-            db.execute("SELECT shares FROM portfolio WHERE account_id = ? AND symbol = ?",
-                session["user_id"],
-                symbol_data["symbol"])[0]["shares"]
-            - shares_sold,
-            session["user_id"],
-            symbol_data["symbol"])
+                   db.execute("SELECT shares FROM portfolio WHERE account_id = ? AND symbol = ?",
+                              session["user_id"],
+                              symbol_data["symbol"])[0]["shares"]
+                   - shares_sold,
+                   session["user_id"],
+                   symbol_data["symbol"])
 
         # Update user balance in table
         db.execute("UPDATE users SET cash = ? FROM users AS u WHERE u.id = ?", user_balance, session["user_id"])
@@ -438,4 +438,4 @@ def sell():
         flash("Sale Complete")
         return redirect("/")
 
-    return render_template("sell.html", user_stocks = user_stocks)
+    return render_template("sell.html", user_stocks=user_stocks)
