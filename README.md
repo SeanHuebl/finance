@@ -15,7 +15,7 @@ API Key = pk_4e75692d158f47d4ad66a37899a09e76
 on Linux in the finance directory run: export API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
   then execute: flask run
 
-on windows in the finance directory run: SET API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
+on Windows in the finance directory run: SET API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
   then execute: flask run
   
 Thank you to IEX for the API: https://iexcloud.io/
