@@ -13,10 +13,10 @@ Per Their Academic Honesty Policy You Are NOT Allowed To Use This code As A Subm
 
 API Key = pk_4e75692d158f47d4ad66a37899a09e76
 
-on Linux open a bash shell in the finance directory and run: export API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
+on Linux open a bash shell in the finance directory and run: export API_KEY=pk_4e75692d158f47d4ad66a37899a09e76\
   then execute: flask run
 
-on Windows open a command prompt in the finance directory and run: SET API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
+on Windows open a command prompt in the finance directory and run: SET API_KEY=pk_4e75692d158f47d4ad66a37899a09e76\
   then execute: flask run
   
 Thank you to IEX for the API: https://iexcloud.io/
