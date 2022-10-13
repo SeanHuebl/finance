@@ -1,4 +1,4 @@
-# finance
+# Finance
 Python and Flask finance application that can have multiple users register for accounts with strong passwords. Each user gets $10,000 sign on bonus and can buy and trade stocks.\
 Stock prices are real prices that are pulled from IEX API\
 First time using Jinja for templating to generate HTML\
