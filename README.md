@@ -9,7 +9,7 @@ Uses SQLite3 for database
 Overall I had a lot of fun with this project and learned a lot!\ 
 I became a lot more comfortable with python and web programming and I really tried to code defensively in this project to reduce risk of security threats.\
 This was my week 9 homework for Harvard CS50 professional certificate!\
-Per Their Academic Honesty Policy You Are NOT Allowed To Use This code As A Submission For Your Homework!\
+Per Their Academic Honesty Policy You Are NOT Allowed To Use This code As A Submission For Your Homework!
 
 API Key = pk_4e75692d158f47d4ad66a37899a09e76
 
