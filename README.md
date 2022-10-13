@@ -9,3 +9,13 @@ Overall I had a lot of fun with this project and learned a lot!
 I became a lot more comfortable with python and web programming and I really tried to code defensively in this project to reduce risk of security threats.
 This was my week 9 homework for Harvard CS50 professional certificate!
 Per Their Academic Honesty Policy You Are NOT Allowed To Use This code As A Submission For Your Homework!
+
+API Key = pk_4e75692d158f47d4ad66a37899a09e76
+
+on Linux in the finance directory run: export API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
+  then execute: flask run
+
+on windows in the finance directory run: SET API_KEY=pk_4e75692d158f47d4ad66a37899a09e76
+  then execute: flask run
+  
+Thank you to IEX for the API: https://iexcloud.io/
